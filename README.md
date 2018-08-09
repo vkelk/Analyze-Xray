@@ -47,8 +47,15 @@ sudo nano /etc/nginx/sites-available/default
 ```
 location /chestxray {
     include proxy_params;
+    fastcgi_read_timeout 300;
     proxy_http_version 1.1;
     proxy_set_header Connection "";
-    proxy_pass http://127.0.0.1:5001;
+    proxy_pass http://localhost:5001;
 }
+```
+8. Edit the /etc/nginx/nginx.conf file and the following lines in the http section:
+```
+proxy_headers_hash_max_size 1024;
+proxy_headers_hash_bucket_size 128; 
+proxy_read_timeout 300;
 ```
