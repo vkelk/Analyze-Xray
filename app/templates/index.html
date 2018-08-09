@@ -65,7 +65,7 @@
                 <br />
                 <input type="hidden" id="filename" name="filename" value="{{ filename }}">
                 <div class="row">
-                    <div id="#alert_message" class="col-sm-12">
+                    <div id="alert_message" class="col-sm-12">
                         <div class="alert alert-info">
                             <strong>Info!</strong> File uploaded, please wait while it is being analyzed. It will take about 2 minutes.
                         </div> 
@@ -119,10 +119,10 @@ $(document).ready(function() {
         var str = '<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>';
         $('#result').html(str);
         $.getJSON(url, function (data) {
-            var info_text = '<div class="alert alert-success"><strong>Success!</strong>File analyzed.</div>';
-            $('#alert_message').html(info_text);
             var str = '<pre>' + syntaxHighlight(JSON.stringify(data, null, 2)) + '</pre>';
             $('#result').html(str);
+            var info_text = '<div class="alert alert-success"><strong>Success! </strong>File analyzed.</div>';
+            $('#alert_message').html(info_text);
         });
     }
 
