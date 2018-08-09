@@ -11,7 +11,7 @@ from .xrayimage import analyze_image
 
 
 @xray.route('/', methods=['GET', 'POST'])
-@xray.route('/analyzexray', methods=['GET', 'POST'])
+@xray.route('/chestxray', methods=['GET', 'POST'])
 def index():
     form = FileForm(CombinedMultiDict((request.files, request.form)))
     if form.validate_on_submit():

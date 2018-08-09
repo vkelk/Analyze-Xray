@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, request
 
 from app.xray import xray
 from app import config
@@ -9,7 +9,7 @@ def create_app(config=config.base_config):
     app = Flask(__name__)
     app.config.from_object(config)
 
-    app.register_blueprint(xray, url_prefix='/analyzexray')
+    app.register_blueprint(xray, url_prefix='/chestxray')
 
     # @app.route('/', methods=['GET'])
     # def index():
