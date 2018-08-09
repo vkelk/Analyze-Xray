@@ -1,0 +1,134 @@
+{% from "_formshelper.html" import render_field %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Analyze Sentiment</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 style="text-align:center;">Analyze Xray Image</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="col-sm-12">
+                    <h3>Please upload image sample</h3>
+                </div>
+                <!-- <div class="row">
+                    <div class="form-group col-sm-10">
+                        <input id="txt_input" class="form-control input-lg" type="text">
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <button id="btn_analyze" type="button" class="btn btn-primary">Analyze text</button>
+                    </div>
+                </div> -->
+                <div class="row">
+                    <form method="post" role="form" id="file_form"
+                        enctype="multipart/form-data">
+                    <div class="col-sm-10">
+                        {{ render_field(form.file_input, class="form-control") }}
+                    </div> 
+                    <div class="col-sm-2">
+                        {{ render_field(form.submit, class="btn btn-primary") }}
+                    </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        {% for category, message in get_flashed_messages(with_categories=true) %}
+                        <div class="alert alert-dismissable alert-{{ category }}">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% if filename %}
+                <br />
+                <input type="hidden" id="filename" name="filename" value="{{ filename }}">
+                <div class="row">
+                    <div id="#alert_message" class="col-sm-12">
+                        <div class="alert alert-info">
+                            <strong>Info!</strong> File uploaded, please wait while it is being analyzed. It will take about 2 minutes.
+                        </div> 
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+<script>
+
+
+$(document).ready(function() {
+
+    var inputData = $('#filename').val();
+
+    function syntaxHighlight(json) {
+        if (typeof json != 'string') {
+            json = JSON.stringify(json, undefined, 2);
+        }
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
+    function getResult(inputData) {
+        url = "getresult/" + inputData.trim();
+        var str = '<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>';
+        $('#result').html(str);
+        $.getJSON(url, function (data) {
+            var info_text = '<div class="alert alert-success"><strong>Success!</strong>File analyzed.</div>';
+            $('#alert_message').html(info_text);
+            var str = '<pre>' + syntaxHighlight(JSON.stringify(data, null, 2)) + '</pre>';
+            $('#result').html(str);
+        });
+    }
+
+    if ( $.type(inputData) === "string" ) {
+        getResult(inputData);
+    }
+
+});
+</script>
