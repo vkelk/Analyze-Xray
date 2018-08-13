@@ -1,5 +1,5 @@
 # Analyze-Xray
-Flask app that does a diagnosis based of uploaded image
+Flask app that does a chest xray diagnosis based of uploaded image
 
 ## Deployment steps
 1. Create virtual environment
@@ -28,7 +28,7 @@ Group=www-data
 PIDFile=/tmp/gunicorn_Flask_xray.pid
 WorkingDirectory=/root/Analyze-Xray
 Environment="PATH=/root/Analyze-Xray/bin"
-ExecStart=/root/Analyze-Xray/bin/gunicorn --workers 3 --bind 0.0.0.0:5001 -m 007 wsgi:app --timeout 180 --error-log /var/log/gunicorn/error.log --access-logfile /var/log/gunicorn/access.log --log-file /var/log/gunicorn/gunicorn.log
+ExecStart=/root/Analyze-Xray/bin/gunicorn --workers 3 --bind 0.0.0.0:5001 -m 007 wsgi:app --timeout 300 --error-log /var/log/gunicorn/error.log --access-logfile /var/log/gunicorn/access.log --log-file /var/log/gunicorn/gunicorn.log
 
 [Install]
 WantedBy=multi-user.target

@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 APP_DIR = os.path.abspath(os.path.join(os.path.abspath(__file__), os.pardir))
 PROJECT_DIR = os.path.abspath(os.path.join(APP_DIR, os.pardir))
 MODEL_DIR = os.path.join(PROJECT_DIR, 'model')
+WEIGHTS_FILE = os.path.join(MODEL_DIR, "xray_class_weights_nonb.best.hdf5")
 load_dotenv(os.path.join(PROJECT_DIR, '.env'))
 
 
