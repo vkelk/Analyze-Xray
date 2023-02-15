@@ -30,5 +30,5 @@ six==1.11.0
 tensorboard==1.10.0
 tensorflow==2.5.0
 termcolor==1.1.0
-Werkzeug==0.15.3
+Werkzeug==2.2.3
 WTForms==2.2.1
