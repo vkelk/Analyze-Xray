@@ -2,7 +2,7 @@ absl-py==0.3.0
 astor==0.7.1
 click==6.7
 flake8==3.5.0
-Flask==1.0.2
+Flask==2.3.2
 Flask-WTF==0.14.2
 gast==0.2.0
 grpcio==1.14.1
